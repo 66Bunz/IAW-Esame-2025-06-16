@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow p-4">
+                <form action="{{ url_for('auth.signup') }}" method="POST" class="text-center"
+                    enctype="multipart/form-data">
+                    <img class="mb-4 mx-auto d-block" src="{{ url_for('static', filename='images/assets/logo.webp') }}"
+                        alt="" width="72" height="57">
+                    <h1 class="h3 mb-3 fw-normal">Registrati</h1>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingUsername" name="username"
+                                    placeholder="Username" required pattern="[^@]+" 
+                                    title="Il nome utente non può contenere il carattere @">
+                                <label for="floatingUsername">Nome utente</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingEmail" name="email"
+                                    placeholder="name@example.com" required>
+                                <label for="floatingEmail">Email</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingName" name="name" placeholder="Nome"
+                                    required>
+                                <label for="floatingName">Nome</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingSurname" name="surname"
+                                    placeholder="Cognome" required>
+                                <label for="floatingSurname">Cognome</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="floatingPassword" name="password"
+                            placeholder="Password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="La password deve contenere almeno 8 caratteri, includendo almeno un numero, una lettera minuscola e una maiuscola">
+                        <label for="floatingPassword">Password</label>
+                        <div class="form-text">La password deve contenere almeno 8 caratteri, un numero, una lettera
+                            minuscola e una maiuscola</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label d-block">Tipo di account</label>
+                        <div class="btn-group w-100" role="group" aria-label="Tipo di account">
+                            <input type="radio" class="btn-check" name="role" id="roleUser" value="0" checked>
+                            <label class="btn btn-outline-danger" for="roleUser">Partecipante</label>
+
+                            <input type="radio" class="btn-check" name="role" id="roleOrganizer" value="1">
+                            <label class="btn btn-outline-danger" for="roleOrganizer">Organizzatore</label>
+                        </div>
+                        <div class="form-text mt-1">Scegli il tipo di account che desideri creare</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="profilePicture" class="form-label">Immagine profilo</label>
+                        <input class="form-control" type="file" id="profilePicture" name="profile_picture"
+                            accept="image/*">
+                        <div class="form-text">Scegli un'immagine per il tuo profilo (opzionale)</div>
+                    </div>
+
+                    <button class="btn red-bg red-bg-hover w-100 py-2 mt-3" type="submit">Registrati</button>
+
+                    <p class="mt-4 mb-0 text-body-secondary">Hai già un account? <a class="red-text"
+                            href="{{ url_for('auth.login') }}">Accedi</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

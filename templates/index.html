@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="vh-100 position-relative overflow-hidden p-0 m-0">
+    <div class="position-absolute top-0 start-0 w-100 h-100">
+        <img class="w-100 h-100 object-fit-cover" src="{{ url_for('static', filename='/images/assets/hero.webp') }}"
+            alt="Sfondo festival">
+        <div class="position-absolute top-0 start-0 w-100 h-100 hero"></div>
+    </div>
+
+    <div class="position-relative d-flex flex-column justify-content-center align-items-center h-100 text-center px-4">
+        <h1 class="display-2 fw-bold mt-5 cream-text">SONOSPHERE</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4 red-text">Un'esperienza musicale unica che ti porterà in un viaggio attraverso i suoni
+                più coinvolgenti. Tre giorni di musica, arte e cultura nel cuore della città.</p>
+            <div class="d-grid gap-5 d-sm-flex justify-content-sm-center">
+                <a href="{{ url_for('main.lineup') }}" class="btn red-bg red-bg-hover btn-lg px-4 gap-3">Lineup
+                    Completa</a>
+                {% if current_user.role == 1 %}
+                <a href="{{ url_for('performances.management') }}"
+                    class="btn red-border red-border-hover btn-lg px-4">Gestione
+                    Performance</a>
+                {% else %}
+                <a href="{{ url_for('tickets.index') }}" class="btn red-border red-border-hover btn-lg px-4">Vai ai
+                    biglietti</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="py-5">
+    
+    <!-- Performance in evidenza -->
+    <div class="container">
+        <div class="row justify-content-center cream-text">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-4">Performance in evidenza</h2>
+                <p class="lead mb-4">Scopri le performance più attese del festival!</p>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    {% for performance in featured_performances %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 position-relative overflow-hidden">
+                            <img src="{{ url_for('static', filename=performance.image_path) }}"
+                                class="card-img-top img-fluid" alt="{{ performance.artist_name }}">
+                            <div
+                                class="card-img-overlay d-flex flex-column justify-content-center cream-text p-3 performance-overlay">
+                                <h5 class="card-title fw-bold">{{ performance.artist_name }}</h5>
+                                <p class="card-text small">{{ performance.description|truncate(100) }}</p>
+                                <a href="{{ url_for('performances.detail', id=performance.id, from='main.home', source_name='Home') }}"
+                                    class="btn red-bg red-border-hover mt-2">Scopri di più</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="text-center">Per vedere tutte le performance, visita la <a
+                    href="{{ url_for('main.lineup') }}">Lineup</a>.</div>
+        </div>
+    </div>
+
+    <!-- Sponsor -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-4 cream-text">
+                <h2 class="display-4">I nostri sponsor</h2>
+                <p class="lead mb-4">Grazie ai nostri sponsor per il loro supporto!</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 text-center mb-4">
+                <img src="{{ url_for('static', filename='/images/assets/sponsor1.webp') }}" alt="Sponsor 1"
+                    class="img-fluid">
+            </div>
+
+            <div class="col-md-4 text-center mb-4">
+                <img src="{{ url_for('static', filename='/images/assets/sponsor2.webp') }}" alt="Sponsor 2"
+                    class="img-fluid">
+            </div>
+
+            <div class="col-md-4 text-center mb-4">
+                <img src="{{ url_for('static', filename='/images/assets/sponsor3.webp') }}" alt="Sponsor 3"
+                    class="img-fluid">
+            </div>
+        </div>
+    </div>
+
+    <!-- Social media -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center cream-text">
+                <h2 class="display-4">Seguici sui social media</h2>
+                <p class="lead mb-4 red-text">Resta aggiornato sulle ultime novità e interagisci con noi!</p>
+                <div class="d-flex justify-content-center">
+                    <a href="#" class="btn red-bg red-border-hover btn-lg m-2">Facebook</a>
+                    <a href="#" class="btn red-bg red-border-hover btn-lg m-2">Instagram</a>
+                    <a href="#" class="btn red-bg red-border-hover btn-lg m-2">Youtube</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

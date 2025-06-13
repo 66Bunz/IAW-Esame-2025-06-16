@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Lineup{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="display-4 text-center mb-3 cream-text">Lineup Completa</h1>
+
+    <!-- Filtri e ricerca -->
+    <div class="card mb-4 shadow-sm grey-text">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" id="searchArtist" class="form-control" placeholder="Cerca artista...">
+                        <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2">
+                        <select id="genreFilter" class="form-select">
+                            <option value="">Tutti i generi</option>
+                            {% for genre in genres %}
+                            <option value="{{ genre.id }}">{{ genre.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="stageFilter" class="form-select">
+                            <option value="">Tutti i palchi</option>
+                            {% for stage in stages %}
+                            <option value="{{ stage.id }}">{{ stage.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs nav-fill mb-4" id="lineupTabs" role="tablist">
+        {% for day in event_days %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if loop.first %}active{% endif %}" id="day-{{ day.id }}-tab" data-bs-toggle="tab"
+                data-bs-target="#day-{{ day.id }}-tab-pane" type="button" role="tab"
+                aria-controls="day-{{ day.id }}-tab-pane"
+                aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                <span class="d-none d-md-inline">{{ day.name }}</span>
+                <span class="d-md-none">{{ day.name[:3] }}</span>
+                <span class="badge red-bg ms-2 performance-count" data-day="{{ day.id }}">{{
+                    performances|selectattr('day_id', 'eq', day.id)|list|length }}</span>
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Contenuto schede -->
+    <div class="tab-content" id="lineupTabsContent">
+        {% for day in event_days %}
+        <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="day-{{ day.id }}-tab-pane"
+            role="tabpanel" aria-labelledby="day-{{ day.id }}-tab" tabindex="0">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="h3 text-center mb-4">{{ day.name }} - {{ day.date|strfdate('%d %B %Y') }}</h2>
+                </div>
+
+                {% set day_performances = performances|selectattr('day_id', 'eq', day.id)|list %}
+                {% if day_performances|length > 0 %}
+
+                {% for stage in stages %}
+                <div class="col-lg-4 mb-4 stage-container" data-stage-id="{{ stage.id }}">
+                    <div class="card h-100 shadow">
+                        <div class="card-header red-bg text-white d-flex justify-content-between align-items-center">
+                            <h3 class="h5 mb-0">{{ stage.name }}</h3>
+                            {% if current_user.is_authenticated and current_user.role == 1 %}
+                            <a href="{{ url_for('performances.editor', action='add', day_id=day.id, stage_id=stage.id) }}"
+                                class="btn btn-sm btn-light">
+                                <i class="bi bi-plus-lg"></i> Nuova performance
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="card-body overflow-y-auto stage-performances-container">
+                            <div class="list-group list-group-flush">
+                                {% set stage_performances = day_performances|selectattr('stage_id', 'eq',
+                                stage.id)|sort(attribute='start_time')|list %}
+                                {% if stage_performances|length > 0 %}
+                                {% for performance in stage_performances %}
+                                <div class="list-group-item border-0 p-0 mb-3 performance-item"
+                                    data-artist="{{ performance.artist_name|lower }}"
+                                    data-genre="{{ performance.genre_id }}" data-stage="{{ performance.stage_id }}">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark me-2">{{ performance.start_time }}</span>
+                                        <span class="small text-muted">{{ performance.duration }} min</span>
+                                    </div>
+                                    <h4 class="h6 mb-1">{{ performance.artist_name }}</h4>
+                                    <p class="small text-truncate mb-2">{{ performance.description }}</p>
+                                    <a href="{{ url_for('performances.detail', id=performance.id, from='main.lineup', source_name='Lineup') }}"
+                                        class="btn btn-sm red-border red-bg-hover">
+                                        Dettagli
+                                    </a>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <p class="text-muted text-center my-4 no-performance-message">Nessuna performance
+                                    programmata</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% else %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        Nessuna performance programmata per {{ day.name }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Messaggio quando non ci sono performance -->
+    <div id="noResultsMessage" class="alert alert-info text-center mt-4 hidden">
+        <i class="bi bi-exclamation-circle me-2"></i> Nessuna performance trovata con i filtri selezionati.
+        <button id="resetFilters" class="btn btn-outline-primary btn-sm ms-3">Reimposta filtri</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/lineup.js') }}"></script>
+{% endblock %}

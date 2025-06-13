@@ -1,0 +1,30 @@
+<script>
+    const ticketTypesData = {
+        {% for ticket_type in ticket_types %}
+        {{ ticket_type.id }}: {
+            name: "{{ ticket_type.name }}",
+            description: "{{ ticket_type.description }}",
+            price: {{ ticket_type.price }},
+            daysCount: {{ ticket_type.days_count }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    const eventDays = {
+        {% for day in event_days %}
+        {{ day.id }}: {
+            name: "{{ day.name }}",
+            date: "{{ day.date }}",
+            attendees: {{ day.current_attendees }},
+            maxAttendees: {{ day.max_attendees }},
+            startTime: "{{ day.start_time }}",
+            endTime: "{{ day.end_time }}",
+            isFull: {{ 'true' if day.current_attendees >= day.max_attendees else 'false' }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    };
+    
+    const fridayFull = {{ 'true' if friday_full else 'false' }};
+    const saturdayFull = {{ 'true' if saturday_full else 'false' }};
+    const sundayFull = {{ 'true' if sunday_full else 'false' }};
+</script>

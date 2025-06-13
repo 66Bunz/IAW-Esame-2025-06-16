@@ -1,0 +1,16 @@
+<p class="form-text mb-2">Scegli il giorno in cui partecipare al festival:</p>
+<div class="btn-group w-100" role="group">
+    {% for day in event_days %}
+    <input type="radio" class="btn-check" name="days" id="{{ day.name|lower }}" value="{{ day.id }}" autocomplete="off"
+        {% if day.current_attendees>= day.max_attendees %}disabled{% endif %}>
+    <label class="btn btn-outline-primary {% if day.current_attendees >= day.max_attendees %}text-muted{% endif %}"
+        for="{{ day.name|lower }}">
+        {{ day.name }}
+        {% if day.current_attendees >= day.max_attendees %}
+        <span class="d-block small">(Esaurito)</span>
+        {% else %}
+        <span class="d-block small">{{ day.current_attendees }}/{{ day.max_attendees }}</span>
+        {% endif %}
+    </label>
+    {% endfor %}
+</div>

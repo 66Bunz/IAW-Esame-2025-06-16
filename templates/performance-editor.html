@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}{% if action == 'edit' %}Modifica Performance{% else %}Nuova Performance{% endif %}{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header red-bg cream-text">
+                    <h1 class="h4 mb-0">{% if action == 'edit' %}Modifica Performance{% else %}Nuova Performance{% endif
+                        %}</h1>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" id="performanceForm">
+                        <!-- Nome artista -->
+                        <div class="mb-3">
+                            <label for="artist_name" class="form-label">Nome Artista/Gruppo *</label>
+                            <input type="text" class="form-control" id="artist_name" name="artist_name" required
+                                maxlength="100" value="{{ performance.artist_name if performance else '' }}">
+                            <div class="form-text">Ogni artista può esibirsi una sola volta nell'edizione del festival
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Giorno -->
+                            <div class="col-md-4 mb-3">
+                                <label for="day_id" class="form-label">Giorno *</label>
+                                <select class="form-select" id="day_id" name="day_id" required>
+                                    <option value="" disabled {% if not performance and not default_day_id %}selected{%
+                                        endif %}>Seleziona...</option>
+                                    {% for day in days %}
+                                    <option value="{{ day.id }}" {% if performance and performance.day_id==day.id
+                                        %}selected {% elif not performance and default_day_id|string==day.id|string
+                                        %}selected{% endif %}>
+                                        {{ day.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Palco -->
+                            <div class="col-md-4 mb-3">
+                                <label for="stage_id" class="form-label">Palco *</label>
+                                <select class="form-select" id="stage_id" name="stage_id" required>
+                                    <option value="" disabled {% if not performance and not default_stage_id
+                                        %}selected{% endif %}>Seleziona...</option>
+                                    {% for stage in stages %}
+                                    <option value="{{ stage.id }}" {% if performance and performance.stage_id==stage.id
+                                        %}selected {% elif not performance and default_stage_id|string==stage.id|string
+                                        %}selected{% endif %}>
+                                        {{ stage.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Genere musicale -->
+                            <div class="col-md-4 mb-3">
+                                <label for="genre_id" class="form-label">Genere *</label>
+                                <select class="form-select" id="genre_id" name="genre_id" required>
+                                    <option value="" disabled {% if not performance %}selected{% endif %}>Seleziona...
+                                    </option>
+                                    {% for genre in genres %}
+                                    <option value="{{ genre.id }}" {% if performance and performance.genre_id==genre.id
+                                        %}selected{% endif %}>
+                                        {{ genre.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Orario di inizio -->
+                            <div class="col-md-6 mb-3">
+                                <label for="start_time" class="form-label">Orario di inizio *</label>
+                                <input type="time" class="form-control" id="start_time" name="start_time" required
+                                    value="{{ performance.start_time if performance else '' }}">
+                            </div>
+
+                            <!-- Durata -->
+                            <div class="col-md-6 mb-3">
+                                <label for="duration" class="form-label">Durata (minuti) *</label>
+                                <input type="number" class="form-control" id="duration" name="duration" required
+                                    min="15" max="180" step="5"
+                                    value="{{ performance.duration if performance else '60' }}">
+                            </div>
+                        </div>
+
+                        <!-- Descrizione -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descrizione *</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required
+                                maxlength="500">{{ performance.description if performance else '' }}</textarea>
+                            <div class="form-text">Breve descrizione dello stile musicale e della performance</div>
+                        </div>
+
+                        <!-- Immagine -->
+                        <div class="mb-4">
+                            <label for="artist_image" class="form-label">Immagine {% if not performance %}*{% endif
+                                %}</label>
+
+                            {% if performance and performance.image_path %}
+                            <div class="mb-2">
+                                <div class="card">
+                                    <img src="{{ url_for('static', filename=performance.image_path) }}"
+                                        class="card-img-top" alt="{{ performance.artist_name }}">
+                                    <div class="card-body p-2 text-center">
+                                        <small class="text-muted">Immagine corrente</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <input type="file" class="form-control" id="artist_image" name="artist_image"
+                                accept="image/*" {% if not performance %}required{% endif %}>
+                            <div class="form-text">
+                                {% if performance %}
+                                Carica una nuova immagine solo se vuoi sostituire quella esistente
+                                {% else %}
+                                Formato consigliato: JPG o PNG
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Pulsanti -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for(source, id=performance.id) }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Torna a {{ source_name }}
+                            </a>
+                            <button type="submit" class="btn red-bg red-bg-hover">
+                                <i class="bi bi-save me-1"></i>
+                                {% if action == 'edit' %}Salva modifiche{% else %}Crea performance{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Informazioni aggiuntive -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Informazioni importanti</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            Le performance salvate come bozze saranno visibili solo a te
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            Una volta pubblicate, le performance non potranno più essere modificate
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            Non è possibile avere performance sovrapposte sullo stesso palco
+                        </li>
+                        <li>
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            Ogni artista può esibirsi una sola volta durante il festival
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

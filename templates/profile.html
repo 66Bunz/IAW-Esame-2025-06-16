@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}{{current_user.username}}{% endblock %}
+
+{% block content %}
+
+<div class="container py-5 white-text">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mb-5 shadow">
+                <div class="row g-0">
+                    <div class="col-md-4 position-relative">
+                        <div class="h-100">
+                            {% if current_user.pfp %}
+                            <img src="{{ url_for('static', filename=current_user.pfp) }}"
+                                class="img-fluid h-100 w-100 object-fit-cover profile-image" alt="Immagine profilo">
+                            {% else %}
+                            <div class="d-flex justify-content-center align-items-center h-100 profile-image">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor"
+                                    class="bi bi-person-circle text-secondary" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path fill-rule="evenodd"
+                                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                </svg>
+                            </div>
+                            {% endif %}
+
+                            <!-- Overlay per cambio immagine -->
+                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center profile-image-overlay image-hover-overlay"
+                                role="button" data-bs-toggle="modal" data-bs-target="#changePfpModal">
+                                <div class="text-center white-text">
+                                    <i class="bi bi-camera-fill d-block mb-2"></i>
+                                    <span>Cambia immagine</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informazioni utente -->
+                    <div class="col-md-8">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="card-title mb-0">@{{ current_user.username }}</h2>
+                                {% if current_user.role == 1 %}
+                                <span class="badge red-bg">Organizzatore</span>
+                                {% else %}
+                                <span class="badge red-bg">Partecipante</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3 fw-bold grey-text">Nome:</div>
+                                <div class="col-md-9 white-text">{{ current_user.name }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3 fw-bold grey-text">Cognome:</div>
+                                <div class="col-md-9 white-text">{{ current_user.surname }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3 fw-bold grey-text">Email:</div>
+                                <div class="col-md-9 white-text">{{ current_user.email }}</div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#editProfileModal">
+                                    <i class="bi bi-pencil-square me-1"></i> Modifica profilo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenuto aggiuntivo specifico per il tipo di utente -->
+            {% if current_user.role == 0 %}
+            <!-- Card per i biglietti del partecipante -->
+            <div class="card mb-5 shadow">
+                <div class="card-header red-bg white-text d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Il mio biglietto</h4>
+                    {% if not tickets %}
+                    <a href="{{ url_for('tickets.index') }}" class="btn btn-sm">
+                        <i class="bi bi-ticket-perforated"></i> Acquista biglietto
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if tickets %}
+                    <div class="row">
+                        {% for ticket in tickets %}
+                        <div class="col-md-6 mx-auto">
+                            <div class="card ticket-card border-0 shadow mb-4">
+                                <div class="card-header bg-gradient red-bg white-text py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">{{ ticket.ticket_type_name }}</h5>
+                                        <span class="badge white-text">ID: {{ ticket.id }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Acquistato il:</span>
+                                        <span class="fw-bold white-text">{{ ticket.purchase_date }}</span>
+                                    </div>
+
+                                    <div class="my-3">
+                                        <h6 class="text-center mb-2">Giorni validi</h6>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <div class="ticket-day-badge {% if ticket.friday %}purple-text{% endif %}">
+                                                <span class="day-label">VEN</span>
+                                                <i
+                                                    class="bi {% if ticket.friday %}bi-check-circle-fill text-success{% else %}bi-x-circle-fill text-muted{% endif %}"></i>
+                                            </div>
+                                            <div
+                                                class="ticket-day-badge {% if ticket.saturday %}purple-text{% endif %}">
+                                                <span class="day-label">SAB</span>
+                                                <i
+                                                    class="bi {% if ticket.saturday %}bi-check-circle-fill text-success{% else %}bi-x-circle-fill text-muted{% endif %}"></i>
+                                            </div>
+                                            <div class="ticket-day-badge {% if ticket.sunday %}purple-text{% endif %}">
+                                                <span class="day-label">DOM</span>
+                                                <i
+                                                    class="bi {% if ticket.sunday %}bi-check-circle-fill text-success{% else %}bi-x-circle-fill text-muted{% endif %}"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 mb-2 text-center">
+                                        <div class="position-relative qr-code-container">
+                                            <img src="{{ url_for('static', filename='images/tickets/' ~ ticket.id ~ '.webp') }}"
+                                                alt="QRCode" class="img-fluid">
+                                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center image-hover-overlay"
+                                                role="button" data-bs-toggle="modal"
+                                                data-bs-target="#qrCodeModal{{ ticket.id }}">
+                                                <div class="text-center red-text">
+                                                    <i class="bi bi-zoom-in d-block mb-2"></i>
+                                                    <span>Ingrandisci QR</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 text-center">
+                                        <div class="badge bg-success p-2">
+                                            <i class="bi bi-check-circle me-1"></i> Valido
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">SonoSphere Festival 2025</small>
+                                        <a href="{{ url_for('main.lineup') }}"
+                                            class="btn btn-sm red-bg red-border-hover">
+                                            <i class="bi bi-calendar-event"></i> Vedi lineup
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">Non hai ancora acquistato nessun biglietto</h5>
+                        <p>Acquista il tuo biglietto per partecipare al festival SonoSphere 2025 e vivi un'esperienza
+                            musicale indimenticabile!</p>
+                        <hr>
+                        <p class="mb-0">Sono disponibili biglietti giornalieri, pass per 2 giorni e pass completi per
+                            l'intero festival.</p>
+                        <div class="mt-3">
+                            <a href="{{ url_for('tickets.index') }}" class="btn red-bg red-bg-hover">
+                                <i class="bi bi-ticket-perforated me-1"></i> Acquista ora
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% elif current_user.role == 1 %}
+            <!-- Card per le performance dell'organizzatore -->
+            <div class="card mb-5 shadow">
+                <div class="card-header red-bg white-text d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Le mie performance</h4>
+                    <a href="{{ url_for('performances.management') }}" class="btn btn-sm">
+                        <i class="bi bi-plus-lg"></i> Aggiungi nuova performance
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if performances %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Artista</th>
+                                    <th>Giorno</th>
+                                    <th>Palco</th>
+                                    <th>Orario</th>
+                                    <th>Stato</th>
+                                    <th>Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for performance in performances %}
+                                <tr>
+                                    <td>{{ performance.artist_name }}</td>
+                                    <td>
+                                        {% if performance.day_id == 1 %}Venerdì
+                                        {% elif performance.day_id == 2 %}Sabato
+                                        {% elif performance.day_id == 3 %}Domenica
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ performance.stage_name }}</td>
+                                    <td>{{ performance.start_time }} ({{ performance.duration }} min)</td>
+                                    <td>
+                                        {% if performance.is_published %}
+                                        <span class="badge bg-success">Pubblicata</span>
+                                        {% else %}
+                                        <span class="badge bg-warning text-dark">Bozza</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('performances.detail', id=performance.id, from='profile.index', source_name='Profilo') }}"
+                                            class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        Non hai ancora creato performance.
+                        <a href="{{ url_for('performances.management') }}" class="alert-link">Crea una performance</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Statistiche per organizzatori -->
+            <div class="card shadow">
+                <div class="card-header red-bg white-text">
+                    <h4 class="card-title mb-0">Statistiche vendita biglietti</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for event_day in event_days %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event_day.name }}</h5>
+                                    <p class="display-4">{{ event_day.current_attendees }}/{{ event_day.max_attendees }}
+                                    </p>
+                                    <div class="progress">
+                                        <!-- Utilizzo di style inline in quanto Bootstrap gestisce in questo modo l'avanzamento della barra -->
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated red-bg"
+                                            role="progressbar"
+                                            style="width: {{ (event_day.current_attendees / event_day.max_attendees * 100) }}%"
+                                            aria-valuenow="{{ event_day.current_attendees }}" aria-valuemin="0"
+                                            aria-valuemax="{{ event_day.max_attendees }}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal per modifica profilo -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Modifica profilo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('profile.update') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ current_user.name }}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">Cognome</label>
+                        <input type="text" class="form-control" id="surname" name="surname"
+                            value="{{ current_user.surname }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ current_user.email }}" required>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Password attuale</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password"
+                            placeholder="Inserisci per confermare le modifiche" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Nuova password (opzionale)</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password"
+                            placeholder="Lascia vuoto per non modificare">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Conferma nuova password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                            placeholder="Ripeti la nuova password">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn red-bg red-bg-hover">Salva
+                            modifiche</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per cambio immagine profilo -->
+<div class="modal fade" id="changePfpModal" tabindex="-1" aria-labelledby="changePfpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePfpModalLabel">Cambia immagine profilo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('profile.update_picture') }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Seleziona una nuova immagine</label>
+                        <input class="form-control" type="file" id="profile_picture" name="profile_picture"
+                            accept="image/*" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-danger" id="removePfp">Rimuovi immagine</button>
+                        <button type="submit" class="btn red-bg red-bg-hover">Carica nuova
+                            immagine</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal per QR Code ingrandito -->
+{% for ticket in tickets %}
+<div class="modal fade" id="qrCodeModal{{ ticket.id }}" tabindex="-1" aria-labelledby="qrCodeModalLabel{{ ticket.id }}"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel{{ ticket.id }}">QR Code Biglietto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="{{ url_for('static', filename='images/tickets/' ~ ticket.id ~ '.webp') }}" alt="QRCode"
+                    class="img-fluid">
+                <p class="mt-3 text-muted small">Mostra questo codice QR all'ingresso del festival</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

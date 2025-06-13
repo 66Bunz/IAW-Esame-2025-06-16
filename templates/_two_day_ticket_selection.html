@@ -1,0 +1,19 @@
+<p class="form-text mb-2">Scegli due giorni consecutivi:</p>
+<div class="btn-group w-100" role="group">
+    {% if event_days|length >= 2 %}
+    {% for i in range(event_days|length - 1) %}
+    {% set day1 = event_days[i] %}
+    {% set day2 = event_days[i+1] %}
+    {% set is_disabled = day1.current_attendees >= day1.max_attendees or day2.current_attendees >= day2.max_attendees %}
+    <input type="radio" class="btn-check" name="days_pair" id="{{ day1.name|lower }}-{{ day2.name|lower }}"
+        value="{{ day1.id }},{{ day2.id }}" autocomplete="off" {% if is_disabled %}disabled{% endif %}>
+    <label class="btn btn-outline-primary {% if is_disabled %}text-muted{% endif %}"
+        for="{{ day1.name|lower }}-{{ day2.name|lower }}">
+        {{ day1.name }} + {{ day2.name }}
+        {% if is_disabled %}
+        <span class="d-block small">(Esaurito)</span>
+        {% endif %}
+    </label>
+    {% endfor %}
+    {% endif %}
+</div>

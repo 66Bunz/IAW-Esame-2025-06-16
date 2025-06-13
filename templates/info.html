@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}Informazioni Festival{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="display-4 text-center mb-5">Informazioni sul Festival</h1>
+
+            <!-- Presentazione -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h2 class="h3 mb-3">Benvenuti a SonoSphere 2025</h2>
+                            <p class="lead">Un'esperienza musicale unica che ti porterà in un viaggio attraverso i suoni
+                                più coinvolgenti.</p>
+                            <p>SonoSphere è un festival che celebra la diversità musicale, offrendo ai partecipanti
+                                un'esperienza immersiva in un ambiente unico e stimolante. Tre giorni di musica dal
+                                vivo, arte e cultura nel cuore della città.</p>
+                            <p>Dal rock all'elettronica, dal jazz all'hip-hop, il nostro festival è un crocevia di
+                                generi e culture musicali, un punto d'incontro per gli amanti della musica di ogni tipo.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ url_for('static', filename='/images/assets/hero2.webp') }}"
+                                alt="Festival SonoSphere" class="img-fluid rounded shadow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date e Orari -->
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Date e Orari</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                {% for day in event_days %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-calendar-event me-2 red-text"></i>
+                                        <strong>{{ day.name }}</strong>
+                                        <div class="text-muted small">{{ day.date|strfdate('%d %B %Y') }}</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge rounded-pill red-bg">{{ day.start_time }} - {{
+                                            day.end_time }}</span>
+                                        {% if day.current_attendees >= day.max_attendees %}
+                                        <div class="badge bg-dark mt-1">Sold Out</div>
+                                        {% else %}
+                                        <div class="badge bg-success mt-1">Biglietti disponibili</div>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="alert alert-info mt-3 mb-0">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                L'apertura delle porte è prevista alle 13:00 ogni giorno
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Informazioni sui Palchi</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="stagesAccordion">
+                                {% for stage in stages %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{ stage.id }}">
+                                        <button class="accordion-button {% if not loop.first %}collapsed{% endif %}"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ stage.id }}"
+                                            aria-expanded="{% if loop.first %}true{% else %}false{% endif %}"
+                                            aria-controls="collapse{{ stage.id }}">
+                                            {{ stage.name }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ stage.id }}"
+                                        class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                                        aria-labelledby="heading{{ stage.id }}" data-bs-parent="#stagesAccordion">
+                                        <div class="accordion-body">
+                                            <p>{{ stage.description }}</p>
+                                            <div class="text-center">
+                                                <img src="{{ url_for('static', filename=stage.image) }}"
+                                                    alt="{{ stage.name }}" class="img-fluid rounded">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Come Arrivare e Regolamento -->
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Come Arrivare</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h4 class="h6"><i class="bi bi-geo-alt-fill me-2 red-text"></i>Indirizzo</h4>
+                                <p>Parco della Musica<br>Via dei Concerti, 123<br>10129 Torino TO</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h4 class="h6"><i class="bi bi-train-front me-2 red-text"></i>Mezzi Pubblici</h4>
+                                <p>Metropolitana: fermata "Parco" (Linea 1)<br>Autobus: linee 12, 15, 56 (fermata
+                                    "Concerti")</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h4 class="h6"><i class="bi bi-car-front-fill me-2 red-text"></i>In Auto</h4>
+                                <p>Parcheggi disponibili nelle vicinanze, con tariffa speciale per i partecipanti al
+                                    festival (€10 al giorno).</p>
+                            </div>
+
+                            <map class="ratio ratio-16x9 mt-3">
+                                <iframe title="Map"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d90168.74603160775!2d7.587689442478801!3d45.070109374336035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47886d126418be25%3A0x8903f803d69c77bf!2sTorino%20TO!5e0!3m2!1sit!2sit!4v1749461948349!5m2!1sit!2sit"
+                                    width="600" height="450" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </map>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Regolamento e FAQ</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="faqAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Cosa posso portare al festival?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            <p>Puoi portare con te uno zaino o una borsa di piccole dimensioni, una
+                                                bottiglia d'acqua vuota (che potrai riempire alle fontanelle), creme
+                                                solari, occhiali da sole, cappelli e impermeabili.</p>
+                                            <p><strong>Non è consentito</strong> portare cibo e bevande dall'esterno,
+                                                oggetti contundenti, armi, droni, animali (eccetto cani guida) e
+                                                attrezzature professionali foto/video.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            Ci sono limiti di età?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse"
+                                        aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            <p>Il festival è aperto a tutti. I minori di 16 anni devono essere
+                                                accompagnati da un adulto.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            Come funziona il pagamento all'interno del festival?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse"
+                                        aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            <p>All'interno del festival è attivo un sistema di pagamento cashless.
+                                                Potrai caricare credito sul tuo braccialetto e utilizzarlo per tutti gli
+                                                acquisti. Sono accettate anche carte di credito/debito presso tutti i
+                                                punti vendita.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFour">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                            aria-expanded="false" aria-controls="collapseFour">
+                                            Cosa succede in caso di maltempo?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFour" class="accordion-collapse collapse"
+                                        aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            <p>Il festival si svolgerà anche in caso di pioggia leggera. I palchi
+                                                principali sono coperti. In caso di condizioni meteorologiche estreme
+                                                che compromettano la sicurezza, alcune performance potrebbero essere
+                                                ritardate o cancellate.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Servizi e Contatti -->
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Servizi al Festival</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-cup-hot fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Food & Beverage</h4>
+                                            <p class="small mb-0">Ampia selezione gastronomica</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-wifi fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Wi-Fi Gratuito</h4>
+                                            <p class="small mb-0">In tutte le aree</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-h-circle fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Pronto Soccorso</h4>
+                                            <p class="small mb-0">Assistenza medica</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-telephone fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Punti Ricarica</h4>
+                                            <p class="small mb-0">Per dispositivi mobili</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-shield-check fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Sicurezza</h4>
+                                            <p class="small mb-0">Personale dedicato</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light rounded-circle p-2">
+                                                <i class="bi bi-trash fs-4 red-text"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Eco-Sostenibilità</h4>
+                                            <p class="small mb-0">Raccolta differenziata</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header red-bg cream-text">
+                            <h3 class="h5 mb-0">Contatti e Social Media</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h4 class="h6"><i class="bi bi-envelope-fill me-2 red-text"></i>Email</h4>
+                                <p><a href="mailto:info@sonosphere.it"
+                                        class="text-decoration-none">info@sonosphere.it</a></p>
+
+                                <h4 class="h6"><i class="bi bi-telephone-fill me-2 red-text"></i>Telefono</h4>
+                                <p><a href="tel:+390123456789" class="text-decoration-none">+39 012 3456789</a></p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="h6 mb-3">Seguici sui Social</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="#" class="btn btn-outline-dark">
+                                        <i class="bi bi-facebook me-1"></i> Facebook
+                                    </a>
+                                    <a href="#" class="btn btn-outline-dark">
+                                        <i class="bi bi-instagram me-1"></i> Instagram
+                                    </a>
+                                    <a href="#" class="btn btn-outline-dark">
+                                        <i class="bi bi-youtube me-1"></i> YouTube
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="h6 mb-3">Newsletter</h4>
+                                <p class="small">Iscriviti alla nostra newsletter per ricevere aggiornamenti sul
+                                    festival e offerte speciali.</p>
+
+                                <form class="mt-2">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" placeholder="La tua email"
+                                            aria-label="Email" aria-describedby="newsletter-submit">
+                                        <button class="btn red-bg red-bg-hover" type="button"
+                                            id="newsletter-submit">Iscriviti</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acquisto Biglietti -->
+            <div class="card mt-5 shadow-sm red-bg cream-text">
+                <div class="card-body p-4 text-center">
+                    <h2 class="h3 mb-3">Pronto a vivere l'esperienza SonoSphere?</h2>
+                    <p class="lead mb-4">Acquista ora il tuo biglietto e preparati a tre giorni di musica
+                        indimenticabile!</p>
+                    <a href="{{ url_for('tickets.index') }}" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-ticket-perforated-fill me-1"></i> Acquista Biglietti
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

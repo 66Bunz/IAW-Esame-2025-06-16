@@ -1,0 +1,4 @@
+{
+    "html.format.unformattedContentDelimiter": "<!--noformat-->",
+    "html.format.contentUnformatted": "pre,code,textarea,script"
+}

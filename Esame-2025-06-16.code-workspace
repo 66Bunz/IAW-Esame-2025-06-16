@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501,
+		"html.format.unformattedContentDelimiter": "<!--noformat-->"
+	}
+}
