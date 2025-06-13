@@ -214,6 +214,272 @@ default_ticket_types = [
     ("Full Pass", "Valido per tutti e tre i giorni del festival", 139.99, 3),
 ]
 
+default_performances = [
+    (
+        1,
+        "Lunar Echo",
+        "18:00",
+        60,
+        "Un viaggio elettronico attraverso atmosfere lunari e pulsazioni ritmiche profonde",
+        "images/performances/performance_1_20250610224310.webp",
+        1,
+        1,
+        3,
+        1,
+        1,
+        "2025-06-10 20:43:10",
+        "2025-06-10 20:44:38",
+        1,
+    ),
+    (
+        2,
+        "Mystic Voyage",
+        "23:00",
+        60,
+        "Una fusione di blues tradizionale e psichedelia moderna",
+        "images/performances/performance_2_20250610224602.webp",
+        3,
+        3,
+        7,
+        1,
+        1,
+        "2025-06-10 20:46:02",
+        "2025-06-10 20:59:16",
+        0,
+    ),
+    (
+        3,
+        "Aurora Groove",
+        "14:00",
+        30,
+        "Pop elettronico con influenze nordiche e vocalizzi eterei",
+        "images/performances/performance_3_20250610225521.webp",
+        2,
+        3,
+        2,
+        1,
+        1,
+        "2025-06-10 20:55:21",
+        "2025-06-10 20:59:24",
+        0,
+    ),
+    (
+        4,
+        "Velvet Thunder",
+        "21:00",
+        60,
+        "Power metal con influenze sinfoniche e una potente voce femminile",
+        "images/performances/performance_4_20250610225737.webp",
+        2,
+        1,
+        8,
+        1,
+        0,
+        "2025-06-10 20:57:37",
+        "2025-06-10 20:57:37",
+        0,
+    ),
+    (
+        5,
+        "Midnight Mirage",
+        "18:30",
+        45,
+        "Indie pop etereo con testi poetici e melodie sognanti",
+        "images/performances/performance_5_20250610225901.webp",
+        1,
+        3,
+        10,
+        1,
+        1,
+        "2025-06-10 20:59:01",
+        "2025-06-10 20:59:45",
+        1,
+    ),
+    (
+        6,
+        "Quantum Flux",
+        "14:00",
+        60,
+        "Progressive metal tecnico con cambi di tempo complessi e virtuosismo strumentale",
+        "images/performances/performance_6_20250610230139.webp",
+        2,
+        1,
+        8,
+        1,
+        1,
+        "2025-06-10 21:01:39",
+        "2025-06-10 21:02:35",
+        0,
+    ),
+    (
+        7,
+        "Rhapsody in Blue",
+        "14:00",
+        60,
+        "Un quartetto jazz che reinterpreta classici in chiave moderna e presenta composizioni originali",
+        "images/performances/performance_7_20250610231525.webp",
+        3,
+        2,
+        6,
+        1,
+        1,
+        "2025-06-10 21:15:25",
+        "2025-06-10 21:15:37",
+        0,
+    ),
+    (
+        8,
+        "The Crystal Waves",
+        "15:00",
+        60,
+        "Rock alternativo con influenze progressive e testi introspettivi",
+        "images/performances/performance_8_20250610232310.webp",
+        1,
+        2,
+        1,
+        3,
+        1,
+        "2025-06-10 21:23:10",
+        "2025-06-10 21:23:23",
+        1,
+    ),
+    (
+        9,
+        "Neon Syndrome",
+        "14:00",
+        45,
+        "Synthwave con influenze cinematiche e un estetica retrofuturistica",
+        "images/performances/performance_9_20250610232439.webp",
+        2,
+        2,
+        3,
+        3,
+        1,
+        "2025-06-10 21:24:39",
+        "2025-06-10 21:24:50",
+        0,
+    ),
+    (
+        10,
+        "Ethereal Whispers",
+        "14:45",
+        45,
+        "Folk moderno che intreccia melodie tradizionali con arrangiamenti contemporanei",
+        "images/performances/performance_10_20250610232556.webp",
+        2,
+        2,
+        9,
+        3,
+        1,
+        "2025-06-10 21:25:56",
+        "2025-06-10 21:26:02",
+        0,
+    ),
+    (
+        11,
+        "Electric Oasis",
+        "15:30",
+        30,
+        "Fusion di elettronica e world music che crea paesaggi sonori immersivi",
+        "images/performances/performance_11_20250610232702.webp",
+        2,
+        2,
+        3,
+        3,
+        1,
+        "2025-06-10 21:27:02",
+        "2025-06-10 21:27:53",
+        0,
+    ),
+    (
+        12,
+        "Soul Ignition",
+        "17:30",
+        60,
+        "R&B contemporaneo che fonde tradizione soul con produzioni moderne",
+        "images/performances/performance_12_20250610233004.webp",
+        1,
+        3,
+        5,
+        3,
+        0,
+        "2025-06-10 21:30:04",
+        "2025-06-10 21:30:04",
+        0,
+    ),
+    (
+        13,
+        "Nebula Dreams",
+        "23:00",
+        60,
+        "Un ensemble di jazz sperimentale che fonde sonorità tradizionali con elettronica ambient",
+        "images/performances/performance_13_20250610233440.webp",
+        3,
+        1,
+        6,
+        4,
+        1,
+        "2025-06-10 21:34:40",
+        "2025-06-10 21:34:48",
+        1,
+    ),
+    (
+        14,
+        "Eternal Echoes",
+        "14:00",
+        60,
+        "Ambient sperimentale che esplora le intersezioni tra suono, spazio e percezione",
+        "images/performances/performance_14_20250610233606.webp",
+        3,
+        1,
+        6,
+        4,
+        1,
+        "2025-06-10 21:36:06",
+        "2025-06-10 21:36:46",
+        0,
+    ),
+    (
+        15,
+        "Digital Horizons",
+        "17:00",
+        60,
+        "Techno sperimentale con visual art sincronizzata",
+        "images/performances/performance_15_20250610233750.webp",
+        3,
+        3,
+        11,
+        4,
+        1,
+        "2025-06-10 21:37:50",
+        "2025-06-10 21:38:14",
+        1,
+    ),
+    (
+        16,
+        "Crimson Tide",
+        "18:00",
+        40,
+        "Una band rock emergente con sonorità vintage e una energia contagiosa sul palco",
+        "images/performances/performance_16_20250610233929.webp",
+        3,
+        3,
+        1,
+        4,
+        1,
+        "2025-06-10 21:39:29",
+        "2025-06-10 21:39:35",
+        0,
+    ),
+]
+
+default_tickets = [
+    (1, 5, 3, "2025-06-10 21:55:08", 1, 1, 1, 1),
+    (2, 6, 1, "2025-06-10 21:55:50", 1, 0, 1, 0),
+    (3, 8, 2, "2025-06-10 21:57:06", 1, 1, 1, 0),
+    (4, 9, 2, "2025-06-10 21:57:37", 1, 0, 1, 1),
+]
+
 
 def ensure_db_directory():
     """Assicura che la directory del database esista"""
@@ -332,6 +598,18 @@ def initialize_default_data():
     cursor.close()
     conn.close()
 
+    if success and not initialize_default_users():
+        print("Errore durante l'inizializzazione degli utenti.")
+        success = False
+
+    if success and not initialize_default_performances():
+        print("Errore durante l'inizializzazione delle performance.")
+        success = False
+    
+    if success and not initialize_default_tickets():
+        print("Errore durante l'inizializzazione dei biglietti.")
+        success = False
+
     return success
 
 
@@ -398,6 +676,91 @@ def initialize_default_users():
     finally:
         cursor.close()
         conn.close()
+
+    return success
+
+
+def initialize_default_performances():
+    """
+    Inizializza le performance predefinite nel database
+    """
+    if not check_db_exists():
+        print("Database non trovato. Crea prima la struttura del database.")
+        return False
+
+    conn = sqlite3.connect(ROOT_PATH + DB_PATH)
+    cursor = conn.cursor()
+
+    success = True
+
+    try:
+        cursor.execute("SELECT COUNT(*) FROM performances")
+        if cursor.fetchone()[0] == 0:
+            os.makedirs(f"{ROOT_PATH}static/images/performances", exist_ok=True)
+
+            cursor.execute("DELETE FROM sqlite_sequence WHERE name='performances'")
+
+            cursor.executemany(
+                """INSERT INTO performances 
+                (id, artist_name, start_time, duration, description, image_path, 
+                day_id, stage_id, genre_id, organizer_id, is_published, 
+                created_at, updated_at, is_featured) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                default_performances,
+            )
+            print("Performance inizializzate con successo")
+        else:
+            print("La tabella performances contiene già dati, inizializzazione saltata")
+    except Exception as e:
+        conn.rollback()
+        print(f"Errore durante l'inizializzazione delle performance: {e}")
+        success = False
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return success
+
+
+def initialize_default_tickets():
+    """
+    Inizializza i biglietti predefiniti nel database
+    """
+    if not check_db_exists():
+        print("Database non trovato. Crea prima la struttura del database.")
+        return False
+
+    conn = sqlite3.connect(ROOT_PATH + DB_PATH)
+    cursor = conn.cursor()
+
+    success = True
+
+    try:
+        cursor.execute("SELECT COUNT(*) FROM tickets")
+        if cursor.fetchone()[0] == 0:
+            # Resetta la sequenza per permettere ID specifici
+            cursor.execute("DELETE FROM sqlite_sequence WHERE name='tickets'")
+            
+            # Inserisci i biglietti
+            cursor.executemany(
+                """INSERT INTO tickets 
+                (id, user_id, ticket_type_id, purchase_date, is_valid, 
+                friday, saturday, sunday) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                default_tickets
+            )
+            print("Biglietti inizializzati con successo")
+        else:
+            print("La tabella tickets contiene già dati, inizializzazione saltata")
+    except Exception as e:
+        conn.rollback()
+        print(f"Errore durante l'inizializzazione dei biglietti: {e}")
+        success = False
+
+    conn.commit()
+    cursor.close()
+    conn.close()
 
     return success
 
@@ -725,12 +1088,6 @@ def main():
                 print("2. Popolamento dati predefiniti...")
                 if not initialize_default_data():
                     print("Errore durante il popolamento dei dati!")
-                    success = False
-
-            if success:
-                print("3. Inizializzazione utenti...")
-                if not initialize_default_users():
-                    print("Errore durante l'inizializzazione degli utenti!")
                     success = False
 
             if success:
